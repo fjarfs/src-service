@@ -17,9 +17,9 @@
 	$app->register(Fjarfs\SrcService\SrcServiceProvider::class);
 	```
   
-### Cara Penggunaan
+### Cara Setting Service
 1. Buat folder pada path  `app/Libraries/Services`
-2. Buat file 
+2. Buat file `UserService.php`
     ```php
     <?php
 
@@ -40,11 +40,30 @@
         private const USER_BY_ID = 'api/v1/user/service/by-user-id';
     }
     ```
-3. Tambahkan `SERVICE_USER_URI` pada .env
+3. Buat file `AuthService.php`
+    ```php
+    <?php
+
+    namespace App\Libraries\Services;
+
+    use Fjarfs\SrcService\Service;
+
+    class AuthService extends Service
+    {
+        /**
+        * SERVICE_USER_URI
+        */
+        protected $baseUri = 'SERVICE_AUTH_URI';
+    }
+    ```
+3. Tambahkan `SERVICE_USER_URI` pada .env, dan atur URI dari masing-masing service
     ```php
     SERVICE_USER_URI=http://localhost
+    SERVICE_AUTH_URI=http://localhost
     ```
-4. Meminta request ke service user / `UserService`
+
+### Cara Penggunaan
+* Cara request ke service user / `UserService`
     ```php
     use App\Libraries\Services\UserService;
     use Fjarfs\SrcService\Service\Exception as ServiceException;
