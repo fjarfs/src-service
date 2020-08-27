@@ -1,0 +1,41 @@
+{
+    "name": "fjarfs/src-service",
+    "description": "Core HTTP request for SRC environment",
+    "type": "library",
+    "keywords": [
+        "fjarfs",
+        "fajar",
+        "src-service"
+    ],
+    "require": {
+        "php": ">=7"
+    },
+    "require-dev": {
+        "laravel/laravel": "^5.6",
+        "laravel/lumen": "^5.8",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fjarfs\\SrcService\\": "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fajar Sujito",
+            "email": "fjarfs@gmail.com"
+        }
+    ],
+    "scripts": {
+        "cs": "phpcs --standard=PSR12 src/"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Fjarfs\\SrcService\\SrcServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
