@@ -24,8 +24,6 @@ class Auth
      */
     public static function middleware(Request $request, Closure $next)
     {
-        $info = self::user();
-
         if (is_null($info)) :
             return response()->json(['message' => 'Tidak ada otorisasi'], 401);
         endif;
