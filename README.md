@@ -46,14 +46,14 @@
     ```
 4. Meminta request ke service user / `UserService`
     ```php
-        use App\Libraries\Services\UserService;
-        use Fjarfs\SrcService\Service\Exception as ServiceException;
+    use App\Libraries\Services\UserService;
+    use Fjarfs\SrcService\Service\Exception as ServiceException;
     
-        try {
-            $userService = UserService::get(UserService::USER_BY_ID . "/1");
-            ServiceException::on($userService);
-            $user = $userService->data;
-        } catch (\Exception $e) {
-            $user = null;
-        }
+    try {
+        $userService = UserService::get(UserService::USER_BY_ID . "/1");
+        ServiceException::on($userService);
+         $user = $userService->data;
+    } catch (\Exception $e) {
+        $user = null;
+    }
     ```
