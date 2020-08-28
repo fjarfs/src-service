@@ -73,7 +73,7 @@ class Service
                 $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : 'authorization';
             }
             if ($item == 'accept') {
-                $item = app('request')->header('accept');
+                $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'accept';
             }
             
             return $item;
@@ -87,9 +87,9 @@ class Service
             return $item == 'application/json';
         });
 
-        if ($acceptHeader->isEmpty()) :
+        if ($acceptHeader->isEmpty()) {
             throw new \Exception("Header harus menggunakan Accept: application/json");
-        endif;
+        }
         
         return $headers->toArray();
     }

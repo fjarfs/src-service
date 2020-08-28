@@ -24,6 +24,8 @@ class Auth
      */
     public static function middleware(Request $request, Closure $next)
     {
+        $info = self::info();
+
         if (is_null($info)) {
             return response()->json(['message' => 'Tidak ada otorisasi'], 401);
         }
@@ -94,9 +96,9 @@ class Auth
 
         $info = self::info();
 
-        if (is_null($info)) :
+        if (is_null($info)) {
             return null;
-        endif;
+        }
 
         try {
             $user = UserService::get("api/v1/user/service/by-user-id/{$info->user_id}");
