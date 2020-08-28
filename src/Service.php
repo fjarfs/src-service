@@ -73,23 +73,13 @@ class Service
                 $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : 'authorization';
             }
             if ($item == 'accept') {
-                $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
+                $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'accept';
             }
             
             return $item;
         })->filter(function ($item) {
             return $item != null;
         });
-
-        $acceptHeader = collect(explode(',', $headers->get('Accept')))->transform(function ($item) {
-            return trim($item);
-        })->filter(function ($item) {
-            return $item == 'application/json';
-        });
-
-        if ($acceptHeader->isEmpty()) {
-            throw new \Exception("Header harus menggunakan Accept: application/json");
-        }
         
         return $headers->toArray();
     }
