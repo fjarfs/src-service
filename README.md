@@ -71,7 +71,7 @@
     try {
         $userService = UserService::get(UserService::USER_BY_ID . "/1");
         ServiceException::on($userService);
-         $user = $userService->data;
+        $user = $userService->data;
     } catch (\Exception $e) {
         $user = null;
     }
