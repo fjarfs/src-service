@@ -12,8 +12,8 @@ use Fjarfs\SrcService\Exception as ServiceException;
 
 class Auth
 {
-    private const REQUEST_AUTH_INFO = 'serviceAuthInfo';
-    private const REQUEST_AUTH_USER = 'serviceAuthUser';
+    protected const REQUEST_AUTH_INFO = 'serviceAuthInfo';
+    protected const REQUEST_AUTH_USER = 'serviceAuthUser';
 
     /**
      * Middleware auth service
@@ -67,7 +67,7 @@ class Auth
      *
      * @return mixed
      */
-    private static function getAuthorization()
+    protected static function getAuthorization()
     {
         return isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : false;
     }
@@ -78,7 +78,7 @@ class Auth
      * @param string $authorization
      * @return string
      */
-    private static function getToken(string $authorization)
+    protected static function getToken(string $authorization)
     {
         return substr($authorization, 7);
     }
@@ -134,7 +134,7 @@ class Auth
      *
      * @return Request
      */
-    private static function currentRequest(): Request
+    protected static function currentRequest(): Request
     {
         return app('request');
     }
@@ -145,7 +145,7 @@ class Auth
      * @param string $property
      * @return boolean
      */
-    private static function currentRequestHas(string $property): bool
+    protected static function currentRequestHas(string $property): bool
     {
         return property_exists(self::currentRequest(), self::currentRequestProperty($property));
     }
@@ -157,7 +157,7 @@ class Auth
      * @param mixed $data
      * @return void
      */
-    private static function currentRequestSet(string $property, $data): void
+    protected static function currentRequestSet(string $property, $data): void
     {
         self::currentRequest()->{self::currentRequestProperty($property)} = $data;
     }
@@ -168,7 +168,7 @@ class Auth
      * @param string $property
      * @return mixed
      */
-    private static function currentRequestGet(string $property)
+    protected static function currentRequestGet(string $property)
     {
         return self::currentRequest()->{self::currentRequestProperty($property)};
     }
@@ -179,7 +179,7 @@ class Auth
      * @param string $property
      * @return string
      */
-    private static function currentRequestProperty(string $property): string
+    protected static function currentRequestProperty(string $property): string
     {
         return $property . '@' . self::currentRequest()->fingerprint();
     }
