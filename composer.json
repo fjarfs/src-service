@@ -16,9 +16,6 @@
         "guzzlehttp/guzzle": "^6.3"
     },
     "autoload": {
-        "files": [
-            "src/Helpers/SecurityHelpers.php"
-        ],
         "psr-4": {
             "Fjarfs\\SrcService\\": "src"
         }

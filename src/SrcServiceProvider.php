@@ -26,5 +26,7 @@ class SrcServiceProvider extends ServiceProvider
         $this->app->make('Fjarfs\SrcService\Auth');
         $this->app->make('Fjarfs\SrcService\Exception');
         $this->app->make('Fjarfs\SrcService\Service');
+        $this->app->make('Fjarfs\SrcService\Helpers\Security');
+        $this->app->make('Fjarfs\SrcService\Middleware\AccessKey');
     }
 }

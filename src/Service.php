@@ -4,10 +4,8 @@ namespace Fjarfs\SrcService;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
+use Fjarfs\SrcService\Helpers\Security;
 
-/**
- * Core service class
- */
 class Service
 {
 
@@ -66,6 +64,7 @@ class Service
             'Accept'        => 'accept',
             'Authorization' => 'authorization',
             'Access-From'   => 'service',
+            'Access-Key'    => Security::encrypt(config('app.key') . '@' . time())
         ]);
 
         $headers = $takes->transform(function ($item) {
