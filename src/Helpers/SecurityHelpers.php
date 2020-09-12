@@ -17,7 +17,6 @@ if (function_exists('ayoencrypt')) {
      */
     function ayoencrypt($value)
     {
-        dd('t');
         $key   = hash('sha256', config('app.key'));
         $iv    = substr($key, 0, openssl_cipher_iv_length(config('app.cipher')));
 
