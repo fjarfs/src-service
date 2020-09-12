@@ -64,7 +64,7 @@ class Service
             'Accept'        => 'accept',
             'Authorization' => 'authorization',
             'Access-From'   => 'service',
-            'Access-Key'    => Security::encrypt(config('app.key') . '@' . time())
+            'Access-Key'    => Security::encrypt(config('srcservice.key') . '@' . time())
         ]);
 
         $headers = $takes->transform(function ($item) {
