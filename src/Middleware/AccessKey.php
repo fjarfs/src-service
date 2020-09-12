@@ -4,6 +4,7 @@ namespace Fjarfs\SrcService\Middleware;
 
 use Closure;
 use Carbon\Carbon;
+use Fjarfs\SrcService\Helpers\Security;
 
 class AccessKey
 {
@@ -17,7 +18,7 @@ class AccessKey
     public function handle($request, Closure $next)
     {
         if ($accessKey = $request->header('Access-Key')) {
-            if ($secretKey = ayodecrypt($accessKey)) {
+            if ($secretKey = Security::decrypt($accessKey)) {
                 $split = explode('@', $secretKey);
 
                 if (count($split) == 2) {
