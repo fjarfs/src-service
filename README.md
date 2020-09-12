@@ -72,6 +72,41 @@
     	```php
     	$app->configure('srcservice');
     	```
+### Setting Middleware
+- Pastikan setiap request antar service menggunakan middleware `service`
+    #### Laravel
+    - Daftarkan middleware service di `app/Http/Kernel.php`
+        ```php
+        /**
+         * The application's route middleware.
+         *
+         * These middleware may be assigned to groups or used individually.
+         *
+         * @var array
+         */
+    	protected $routeMiddleware = [
+            'service'   => \Fjarfs\SrcService\Middleware\Accesskey::class,
+        ];
+    	```
+    #### Lumen
+    - Daftarkan middleware service di `app/bootstrap.php`
+        ```php
+    	$app->routeMiddleware([
+            'service'   => Fjarfs\SrcService\Middleware\Accesskey::class,
+        ]);
+    	```
+- Contoh penggunaan middleware pada file `controller`
+    ```php
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('service');
+    }
+	```
 ### Setting Service
 1. Buat folder pada path  `app/Libraries/Services`
 2. Buat file `UserService.php`
