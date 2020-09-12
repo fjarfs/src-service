@@ -1,23 +1,78 @@
 # SRC Service
 
-**SRC Service** merupakan package yang digunakan oleh aplikasi SRC untuk request HTTP antar service dengan fitur authentication
+**SRC Service** merupakan package yang digunakan oleh aplikasi SRC untuk request HTTP antar service dengan fitur authentication dan security access
 
 ### Cara Install
 
 - `composer require fjarfs/src-service`
 
-#### Laravel 
+    ##### Laravel 
 
-- Otomatis terdaftar oleh `Laravel Package Discovery`
+    - Otomatis terdaftar oleh `Laravel Package Discovery`
 
-#### Lumen
+    ##### Lumen
 
-- Daftarkan service provider di `bootstrap/app.php`
-	```php
-	$app->register(Fjarfs\SrcService\SrcServiceProvider::class);
-	```
-  
-### Cara Setting Service
+    - Daftarkan service provider di `bootstrap/app.php`
+    	```php
+    	$app->register(Fjarfs\SrcService\SrcServiceProvider::class);
+    	```
+### Setting Konfigurasi 
+- Buat file `config/srcservice.php`
+    ```php
+    <?php
+
+    return [
+    
+        /*
+        |--------------------------------------------------------------------------
+        | Encryption Key
+        |--------------------------------------------------------------------------
+        |
+        | This key is used by the SRC Service and should be set
+        | to a random, 32 character string, otherwise these encrypted strings
+        | will not be safe. Please do this before deploying an application!
+        |
+        */
+    
+        'key' => env('APP_KEY'),
+    
+        'cipher' => 'AES-256-CBC',
+    
+        /*
+        |--------------------------------------------------------------------------
+        | Hash
+        |--------------------------------------------------------------------------
+        |
+        | This key is used by the SRC Service
+        |
+        */
+    
+        'hash' => 'sha256',
+    
+        /*
+        |--------------------------------------------------------------------------
+        | Expire
+        |--------------------------------------------------------------------------
+        |
+        | The expire time is the number of seconds that the access key should be
+        | considered valid. This security feature keeps access keys short-lived so
+        | they have less time to be guessed. You may change this as needed.
+        |
+        */
+    
+        'expire' => 14400
+    
+    ];
+    ```
+- Daftarkan file konfigurasi
+    #### Laravel
+    - Otomatis terdaftar
+    #### Lumen
+    - Daftarkan file konfigurasi di `app/bootstrap.php`
+    	```php
+    	$app->configure('srcservice');
+    	```
+### Setting Service
 1. Buat folder pada path  `app/Libraries/Services`
 2. Buat file `UserService.php`
     ```php
