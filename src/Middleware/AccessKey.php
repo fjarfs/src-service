@@ -21,12 +21,12 @@ class AccessKey
                 $split = explode('@', $secretKey);
 
                 if (count($split) == 2) {
-                    if ($split[0] == config('app.key')) {
+                    if ($split[0] == config('srcservice.key')) {
                         $currentTime = Carbon::now();
                         $requestTime = Carbon::createFromTimestamp($split[1]);
 
                         if ($requestTime->lessThanOrEqualTo($currentTime)) {
-                            if ($currentTime->diffInSeconds($requestTime) <= 60) {
+                            if ($currentTime->diffInSeconds($requestTime) <= config('srcservice.expire')) {
                                 return $next($request);
                             }
                         }

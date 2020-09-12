@@ -11,7 +11,7 @@ class Security
      */
     private static function hash()
     {
-        return 'sha256';
+        return config('srcservice.hash');
     }
 
     /**
@@ -21,7 +21,7 @@ class Security
      */
     private static function key()
     {
-        return config('app.key');
+        return config('srcservice.key');
     }
 
     /**
@@ -31,7 +31,7 @@ class Security
      */
     private static function cipher()
     {
-        return config('app.cipher');
+        return config('srcservice.cipher');
     }
 
     /**
