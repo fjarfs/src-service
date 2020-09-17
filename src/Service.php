@@ -69,7 +69,7 @@ class Service
 
         $headers = $takes->transform(function ($item) {
             if ($item == 'authorization') {
-                $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : 'authorization';
+                $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : (app('request')->header('Authorization')) ? app('request')->header('Authorization') : 'authorization';
             }
             if ($item == 'accept') {
                 $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
