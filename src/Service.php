@@ -72,7 +72,7 @@ class Service
                 $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : 'authorization';
             }
             if ($item == 'accept') {
-                $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'accept';
+                $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
             }
             
             return $item;
