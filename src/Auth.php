@@ -181,6 +181,8 @@ class Auth
      */
     protected static function currentRequestProperty(string $property): string
     {
-        return $property . '@' . self::currentRequest()->fingerprint();
+        $accessKey = app()->runningInConsole() ? md5('console') : self::currentRequest()->fingerprint();
+
+        return $property . '@' . $accessKey;
     }
 }
