@@ -23,6 +23,7 @@ class SrcServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/srcservice.php', 'srcservice');
         $this->app->make('Fjarfs\SrcService\Auth');
         $this->app->make('Fjarfs\SrcService\Exception');
         $this->app->make('Fjarfs\SrcService\Service');
