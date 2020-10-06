@@ -1,5 +1,11 @@
 # SRC Service
 
+<p align="center">
+<a href="https://packagist.org/packages/fjarfs/src-service"><img src="https://img.shields.io/packagist/dt/fjarfs/src-service" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/fjarfs/src-service"><img src="https://img.shields.io/packagist/v/fjarfs/src-service" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/fjarfs/src-service"><img src="https://img.shields.io/packagist/l/fjarfs/src-service" alt="License"></a>
+</p>
+
 **SRC Service** merupakan package yang digunakan oleh aplikasi SRC untuk request HTTP antar service dengan fitur authentication dan security access
 
 ### Cara Install
