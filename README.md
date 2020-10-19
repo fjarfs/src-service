@@ -162,7 +162,7 @@
 * Cara request ke service user / `UserService`
     ```php
     use App\Libraries\Services\UserService;
-    use Fjarfs\SrcService\Service\Exception as ServiceException;
+    use Fjarfs\SrcService\Exception as ServiceException;
     
     try {
         $userService = UserService::get(UserService::USER_BY_ID . "/1");
