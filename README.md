@@ -8,6 +8,13 @@
 
 **SRC Service** merupakan package yang digunakan oleh aplikasi SRC untuk request HTTP antar service dengan fitur authentication dan security access
 
+### Versi yang Didukung
+| Version | Laravel Version |
+|---- |----|
+| < 0.1.8 | <=5.6|
+| > 0.1.9 | >=5.7 |
+
+
 ### Cara Install
 
 - `composer require fjarfs/src-service`
