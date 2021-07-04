@@ -2,6 +2,8 @@
 
 namespace Fjarfs\SrcService;
 
+use Illuminate\Support\Arr;
+
 class Exception
 {
     /**
@@ -14,7 +16,7 @@ class Exception
     public static function on(\stdClass $service, ?string $message = null)
     {
         if ($service->status == 'error') {
-            $message = $message ?: array_first($service->errors)[0];
+            $message = $message ?: Arr::first($service->errors)[0];
             
             throw new \Exception($message);
         }
