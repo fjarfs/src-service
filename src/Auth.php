@@ -9,11 +9,13 @@ use App\Libraries\Services\{
     UserService
 };
 use Fjarfs\SrcService\Exception as ServiceException;
+use Illuminate\Support\Facades\App;
 
 class Auth
 {
     protected const REQUEST_AUTH_INFO = 'serviceAuthInfo';
     protected const REQUEST_AUTH_USER = 'serviceAuthUser';
+    protected const DEFAULT_LOCALE = 'id';
 
     /**
      * Middleware auth service
@@ -26,8 +28,19 @@ class Auth
     {
         $info = self::info();
 
+        // Set app locale if exists
+        if (isset($info->locale)) {
+            $isLocalValid = in_array($info->locale, config('applocale.available', []));
+            $appLocale = $isLocalValid ? $info->locale : self::DEFAULT_LOCALE;
+
+            App::setLocale($appLocale);
+        } else {
+            App::setLocale(config('app.locale', self::DEFAULT_LOCALE));
+        }
+        // Set app locale if exists
+
         if (is_null($info)) {
-            return response()->json(['message' => 'Tidak ada otorisasi'], 401);
+            return response()->json(['message' => __('Tidak ada otorisasi')], 401);
         }
 
         return $next($request);
