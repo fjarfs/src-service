@@ -15,7 +15,6 @@ class Auth
 {
     protected const REQUEST_AUTH_INFO = 'serviceAuthInfo';
     protected const REQUEST_AUTH_USER = 'serviceAuthUser';
-    protected const DEFAULT_LOCALE = 'id';
 
     /**
      * Middleware auth service
@@ -31,8 +30,6 @@ class Auth
         // Set app locale if exists
         if (isset($info->locale)) {
             App::setLocale($info->locale);
-        } else {
-            App::setLocale(config('app.locale', self::DEFAULT_LOCALE));
         }
         // Set app locale if exists
 
