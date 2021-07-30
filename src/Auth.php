@@ -30,10 +30,7 @@ class Auth
 
         // Set app locale if exists
         if (isset($info->locale)) {
-            $isLocalValid = in_array($info->locale, config('applocale.available', []));
-            $appLocale = $isLocalValid ? $info->locale : self::DEFAULT_LOCALE;
-
-            App::setLocale($appLocale);
+            App::setLocale($info->locale);
         } else {
             App::setLocale(config('app.locale', self::DEFAULT_LOCALE));
         }

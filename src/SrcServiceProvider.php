@@ -14,8 +14,7 @@ class SrcServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../config/srcservice.php' => config_path('srcservice.php'),
-            __DIR__ . '/../config/applocale.php' => config_path('applocale.php'),
+            __DIR__ . '/../config/srcservice.php' => config_path('srcservice.php')
         ]);
     }
 
@@ -27,7 +26,6 @@ class SrcServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/srcservice.php', 'srcservice');
-        $this->mergeConfigFrom(__DIR__ . '/../config/applocale.php', 'applocale');
 
         $this->app->make('Fjarfs\SrcService\Auth');
         $this->app->make('Fjarfs\SrcService\Exception');
