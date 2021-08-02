@@ -5,6 +5,12 @@ namespace Fjarfs\SrcService\Middleware;
 use Closure;
 use Illuminate\Support\Facades\App;
 
+/**
+ * Set App Locale By Query Params
+ *
+ * Use this middleware if you want setup the app locale
+ * without authorization middleware.
+ */
 class AppLocale
 {
     /**
