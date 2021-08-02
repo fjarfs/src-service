@@ -36,6 +36,6 @@ class AccessKey
             }
         }
 
-        return response()->json(['message' => 'Tidak ada otorisasi service'], 401);
+        return response()->json(['message' => __('Tidak ada otorisasi service')], 401);
     }
 }
