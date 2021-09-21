@@ -2,6 +2,7 @@
 
 namespace Fjarfs\SrcService;
 
+use Fjarfs\SrcService\Helpers\Locale;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use Fjarfs\SrcService\Helpers\Security;
@@ -64,7 +65,8 @@ class Service
             'Accept'        => 'accept',
             'Authorization' => 'authorization',
             'Access-From'   => 'service',
-            'Access-Key'    => Security::encrypt(config('srcservice.key') . '@' . time())
+            'Access-Key'    => Security::encrypt(config('srcservice.key') . '@' . time()),
+            'App-Locale'    => Locale::getLocale()
         ]);
 
         $headers = $takes->transform(function ($item) {
@@ -74,12 +76,12 @@ class Service
             if ($item == 'accept') {
                 $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
             }
-            
+
             return $item;
         })->filter(function ($item) {
             return $item != null;
         });
-        
+
         return $headers->toArray();
     }
 
