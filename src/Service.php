@@ -71,7 +71,8 @@ class Service
 
         $headers = $takes->transform(function ($item) {
             if ($item == 'authorization') {
-                $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : (app('request')->header('Authorization') ? app('request')->header('Authorization') : 'authorization');
+                $authorization = (app('request')->header('Authorization') ? app('request')->header('Authorization') : 'authorization');
+                $item = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : $authorization;
             }
             if ($item == 'accept') {
                 $item = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : 'application/json';
@@ -94,7 +95,7 @@ class Service
      */
     public static function __callStatic($method, $args)
     {
-        if (count($args) < 1) {
+        if (empty($args)) {
             throw new \InvalidArgumentException('Magic request methods require a URI and optional options array');
         }
 
@@ -145,7 +146,7 @@ class Service
                 'data'    => null
             ];
         } else {
-            $response   = json_decode($this->response->getBody());
+            $getResponse   = json_decode($this->response->getBody());
             $statusCode = $this->response->getStatusCode();
 
             if ($statusCode != 200) {
@@ -155,15 +156,15 @@ class Service
                     'status'    => 'error',
                     'code'      => $statusCode,
                     'message'   => $this->response->getReasonPhrase(),
-                    'errors'    => optional($response)->errors
-                        ? $response->errors
+                    'errors'    => optional($getResponse)->errors
+                        ? $getResponse->errors
                         : (object) ['message' => [$message]]
                 ];
             }
 
-            return $response === null
+            return $getResponse === null
                 ? (string) $this->response->getBody()
-                : $response;
+                : $getResponse;
         }
     }
 }

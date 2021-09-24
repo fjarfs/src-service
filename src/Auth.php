@@ -91,13 +91,13 @@ class Auth
     public static function user()
     {
         if (self::currentRequestHas(self::REQUEST_AUTH_USER)) {
-            return self::currentRequestGet(self::REQUEST_AUTH_USER);
+            $data = self::currentRequestGet(self::REQUEST_AUTH_USER);
         }
 
         $info = self::info();
 
         if (is_null($info)) {
-            return null;
+            $data = null;
         }
 
         try {
@@ -107,10 +107,12 @@ class Auth
 
             self::currentRequestSet(self::REQUEST_AUTH_USER, $user->data);
 
-            return $user->data;
+            $data = $user->data;
         } catch (\Exception $e) {
-            return null;
+            $data = null;
         }
+
+        return $data;
     }
 
     /**
@@ -181,7 +183,7 @@ class Auth
      */
     protected static function currentRequestProperty(string $property): string
     {
-        $accessKey = app()->runningInConsole() ? md5('console') : self::currentRequest()->fingerprint();
+        $accessKey = app()->runningInConsole() ? hash('sha512', 'console') : self::currentRequest()->fingerprint();
 
         return $property . '@' . $accessKey;
     }
