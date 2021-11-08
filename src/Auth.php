@@ -107,7 +107,7 @@ class Auth
             $auth   = self::getAuthorization();
             $token  = self::getToken($auth);
 
-            return $type . '-' . $token;
+            return $type . '-' . sha1($token);
         }
     }
 
