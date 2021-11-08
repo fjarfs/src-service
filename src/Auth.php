@@ -96,14 +96,19 @@ class Auth
      * Get key
      *
      * @param string $type
+     * @param int $userId
      * @return string
      */
-    protected static function getKey($type)
+    protected static function getKey($type, $userId = null)
     {
-        $auth   = self::getAuthorization();
-        $token  = self::getToken($auth);
+        if ($userId) {
+            return $type . '-' . $userId;
+        } else {
+            $auth   = self::getAuthorization();
+            $token  = self::getToken($auth);
 
-        return $type . '-' . $token;
+            return $type . '-' . $token;
+        }
     }
 
     /**
@@ -123,7 +128,7 @@ class Auth
             $data = null;
         }
 
-        $key = self::getKey('user');
+        $key = self::getKey('user', $info->user_id);
         if (Cache::has($key)) {
             try {
                 $user = UserService::get("api/v1/user/service/by-user-id/{$info->user_id}");
