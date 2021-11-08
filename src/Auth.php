@@ -9,6 +9,7 @@ use App\Libraries\Services\{
     UserService
 };
 use Fjarfs\SrcService\Exception as ServiceException;
+use Illuminate\Support\Facades\Cache;
 
 class Auth
 {
@@ -47,19 +48,27 @@ class Auth
         $auth   = self::getAuthorization();
         $token  = self::getToken($auth);
 
-        try {
-            $authService = AuthService::post('api/v1/auth/validate-token', [
-                'token' => $token
-            ]);
+        $key = self::getKey('auth');
+        if (Cache::has($key)) {
+            try {
+                $authService = AuthService::post('api/v1/auth/validate-token', [
+                    'token' => $token
+                ]);
 
-            ServiceException::on($authService);
+                ServiceException::on($authService);
 
-            self::currentRequestSet(self::REQUEST_AUTH_INFO, $authService->data);
+                self::currentRequestSet(self::REQUEST_AUTH_INFO, $authService->data);
 
-            return $authService->data;
-        } catch (\Exception $e) {
-            return null;
+                $data = $authService->data;
+                Cache::put($key, $data, config('srcservice.cache_expire'));
+            } catch (\Exception $e) {
+                $data = null;
+            }
+        } else {
+            $data = Cache::get($key);
         }
+
+        return $data;
     }
 
     /**
@@ -84,6 +93,20 @@ class Auth
     }
 
     /**
+     * Get key
+     *
+     * @param string $type
+     * @return string
+     */
+    protected static function getKey($type)
+    {
+        $auth   = self::getAuthorization();
+        $token  = self::getToken($auth);
+
+        return $type . '-' . $token;
+    }
+
+    /**
      * Get auth user info
      *
      * @return mixed
@@ -100,16 +123,22 @@ class Auth
             $data = null;
         }
 
-        try {
-            $user = UserService::get("api/v1/user/service/by-user-id/{$info->user_id}");
+        $key = self::getKey('user');
+        if (Cache::has($key)) {
+            try {
+                $user = UserService::get("api/v1/user/service/by-user-id/{$info->user_id}");
 
-            ServiceException::on($user);
+                ServiceException::on($user);
 
-            self::currentRequestSet(self::REQUEST_AUTH_USER, $user->data);
+                self::currentRequestSet(self::REQUEST_AUTH_USER, $user->data);
 
-            $data = $user->data;
-        } catch (\Exception $e) {
-            $data = null;
+                $data = $user->data;
+                Cache::put($key, $data, config('srcservice.cache_expire'));
+            } catch (\Exception $e) {
+                $data = null;
+            }
+        } else {
+            $data = Cache::get($key);
         }
 
         return $data;
