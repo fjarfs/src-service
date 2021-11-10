@@ -48,8 +48,8 @@ class Auth
         $auth   = self::getAuthorization();
         $token  = self::getToken($auth);
 
-        $type = 'auth';
-        if ($cache = self::cache($type)) {
+        $key = 'auth';
+        if ($cache = self::cache($key)) {
             $data = $cache;
         } else {
             try {
@@ -67,7 +67,7 @@ class Auth
             }
 
             if ($data) {
-                self::cachePut($type, $data);
+                self::cachePut($key, $data);
             }
         }
 
@@ -105,7 +105,7 @@ class Auth
     protected static function getKey($type, $userId = null)
     {
         if ($userId) {
-            return $type . '-' . $userId;
+            return $type . '-' . sha1($userId);
         } else {
             $auth   = self::getAuthorization();
             $token  = self::getToken($auth);
@@ -131,8 +131,8 @@ class Auth
             return null;
         }
 
-        $type = 'user';
-        if ($cache = self::cache($type, $info->user_id)) {
+        $key = ['user', $info->user_id];
+        if ($cache = self::cache($key)) {
             $data = $cache;
         } else {
             try {
@@ -148,7 +148,7 @@ class Auth
             }
 
             if ($data) {
-                self::cachePut($type, $data);
+                self::cachePut($key, $data);
             }
         }
 
@@ -174,25 +174,27 @@ class Auth
     /**
      * Get Cache
      *
-     * @param string $type
+     * @param string|array $key
      * @return mixed
      */
-    protected static function cache($type, $userId = null)
+    protected static function cache($key)
     {
-        $key = self::getKey($type, $userId);
+        $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
+
         return Cache::get($key);
     }
 
     /**
      * Put Cache
      *
-     * @param string $type
+     * @param string|array $key
      * @param mixed $data
      * @return void
      */
-    protected static function cachePut($type, $data)
+    protected static function cachePut($key, $data)
     {
-        $key = self::getKey($type);
+        $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
+
         Cache::put($key, $data, config('srcservice.cache_expire'));
     }
 
