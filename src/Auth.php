@@ -105,12 +105,12 @@ class Auth
     protected static function getKey($type, $userId = null)
     {
         if ($userId) {
-            return $type . '-' . sha1($userId);
+            return $type . '-' . hash('sha256', $userId);
         } else {
             $auth   = self::getAuthorization();
             $token  = self::getToken($auth);
 
-            return $type . '-' . sha1($token);
+            return $type . '-' . hash('sha256', $token);
         }
     }
 
