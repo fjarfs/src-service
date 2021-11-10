@@ -50,6 +50,6 @@ return [
     |
     */
 
-    'cache_expire' => 3600
+    'cache_expire' => 600
 
 ];

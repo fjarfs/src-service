@@ -48,8 +48,10 @@ class Auth
         $auth   = self::getAuthorization();
         $token  = self::getToken($auth);
 
-        $key = self::getKey('auth');
-        if (Cache::has($key)) {
+        $type = 'auth';
+        if ($cache = self::cache($type)) {
+            $data = $cache;
+        } else {
             try {
                 $authService = AuthService::post('api/v1/auth/validate-token', [
                     'token' => $token
@@ -60,12 +62,13 @@ class Auth
                 self::currentRequestSet(self::REQUEST_AUTH_INFO, $authService->data);
 
                 $data = $authService->data;
-                Cache::put($key, $data, config('srcservice.cache_expire'));
             } catch (\Exception $e) {
                 $data = null;
             }
-        } else {
-            $data = Cache::get($key);
+
+            if ($data) {
+                self::cachePut($type, $data);
+            }
         }
 
         return $data;
@@ -125,11 +128,13 @@ class Auth
         $info = self::info();
 
         if (is_null($info)) {
-            $data = null;
+            return null;
         }
 
-        $key = self::getKey('user', $info->user_id);
-        if (Cache::has($key)) {
+        $type = 'user';
+        if ($cache = self::cache($type, $info->user_id)) {
+            $data = $cache;
+        } else {
             try {
                 $user = UserService::get("api/v1/user/service/by-user-id/{$info->user_id}");
 
@@ -138,12 +143,13 @@ class Auth
                 self::currentRequestSet(self::REQUEST_AUTH_USER, $user->data);
 
                 $data = $user->data;
-                Cache::put($key, $data, config('srcservice.cache_expire'));
             } catch (\Exception $e) {
                 $data = null;
             }
-        } else {
-            $data = Cache::get($key);
+
+            if ($data) {
+                self::cachePut($type, $data);
+            }
         }
 
         return $data;
@@ -163,6 +169,31 @@ class Auth
         }
 
         return true;
+    }
+
+    /**
+     * Get Cache
+     *
+     * @param string $type
+     * @return mixed
+     */
+    protected static function cache($type, $userId = null)
+    {
+        $key = self::getKey($type, $userId);
+        return Cache::get($key);
+    }
+
+    /**
+     * Put Cache
+     *
+     * @param string $type
+     * @param mixed $data
+     * @return void
+     */
+    protected static function cachePut($type, $data)
+    {
+        $key = self::getKey($type);
+        Cache::put($key, $data, config('srcservice.cache_expire'));
     }
 
     /**

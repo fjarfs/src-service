@@ -3,17 +3,17 @@
     "description": "Core HTTP request for SRC environment",
     "type": "library",
     "keywords": [
-        "fjarfs",
-        "fajar",
+        "src",
+        "sampoerna",
         "src-service"
     ],
     "require": {
-        "php": ">=7"
+        "php": "^7|^8"
     },
     "require-dev": {
-        "laravel/laravel": "^5.6",
-        "laravel/lumen": "^5.8",
-        "guzzlehttp/guzzle": "^6.3"
+        "laravel/laravel": "^5.6|^8.0",
+        "laravel/lumen": "^5.8|^8.0",
+        "guzzlehttp/guzzle": "^6.3|^7.4"
     },
     "autoload": {
         "psr-4": {

@@ -17,7 +17,7 @@ class Exception
     {
         if ($service->status == 'error') {
             $message = $message ?: Arr::first($service->errors)[0];
-            
+
             throw new \Exception($message);
         }
     }
