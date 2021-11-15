@@ -75,46 +75,6 @@ class Auth
     }
 
     /**
-     * Get authorization header
-     *
-     * @return mixed
-     */
-    protected static function getAuthorization()
-    {
-        return isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : false;
-    }
-
-    /**
-     * Get token
-     *
-     * @param string $authorization
-     * @return string
-     */
-    protected static function getToken(string $authorization)
-    {
-        return substr($authorization, 7);
-    }
-
-    /**
-     * Get key
-     *
-     * @param string $type
-     * @param int $userId
-     * @return string
-     */
-    protected static function getKey($type, $userId = null)
-    {
-        if ($userId) {
-            return $type . '-' . hash('sha256', $userId);
-        } else {
-            $auth   = self::getAuthorization();
-            $token  = self::getToken($auth);
-
-            return $type . '-' . hash('sha256', $token);
-        }
-    }
-
-    /**
      * Get auth user info
      *
      * @return mixed
@@ -169,6 +129,46 @@ class Auth
         }
 
         return true;
+    }
+
+    /**
+     * Get authorization header
+     *
+     * @return mixed
+     */
+    protected static function getAuthorization()
+    {
+        return isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : false;
+    }
+
+    /**
+     * Get token
+     *
+     * @param string $authorization
+     * @return string
+     */
+    protected static function getToken(string $authorization)
+    {
+        return substr($authorization, 7);
+    }
+
+    /**
+     * Get key
+     *
+     * @param string $type
+     * @param int $userId
+     * @return string
+     */
+    protected static function getKey($type, $userId = null)
+    {
+        if ($userId) {
+            return $type . '-' . hash('sha256', $userId);
+        } else {
+            $auth   = self::getAuthorization();
+            $token  = self::getToken($auth);
+
+            return $type . '-' . hash('sha256', $token);
+        }
     }
 
     /**
