@@ -15,6 +15,7 @@ class Auth
 {
     protected const REQUEST_AUTH_INFO = 'serviceAuthInfo';
     protected const REQUEST_AUTH_USER = 'serviceAuthUser';
+    protected const AUTH_COUNTRY = 'authCountry';
 
     /**
      * Middleware auth service
@@ -129,6 +130,25 @@ class Auth
         }
 
         return true;
+    }
+
+    /**
+     * get auth country
+     *
+     * @return string
+     */
+    public static function country()
+    {
+        if (static::currentRequestHas(static::AUTH_COUNTRY)) {
+            return static::currentRequestGet(static::AUTH_COUNTRY);
+        }
+
+        $user = optional(static::user());
+        $country = $user->country ?: 'ID';
+
+        static::currentRequestSet(self::AUTH_COUNTRY, $country);
+
+        return $country;
     }
 
     /**
