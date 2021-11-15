@@ -146,7 +146,7 @@ class Auth
         $user = optional(static::user());
         $country = $user->country ?: 'ID';
 
-        static::currentRequestSet(self::AUTH_COUNTRY, $country);
+        static::currentRequestSet(static::AUTH_COUNTRY, $country);
 
         return $country;
     }
