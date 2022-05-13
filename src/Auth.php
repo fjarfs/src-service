@@ -172,6 +172,39 @@ class Auth
     }
 
     /**
+     * Clear auth cache
+     *
+     * @return void
+     */
+    public static function cacheClear()
+    {
+        try {
+            if ($auth = self::cache('auth')) {
+                // remove auth cache
+                self::onCache()->forget(self::cacheKey('auth'));
+
+                // remove user cache
+                self::onCache()->forget(self::cacheKey([
+                    'user',
+                    $auth->user_id
+                ]));
+            }
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }
+
+    /**
+     * Use Cache
+     *
+     * @return \Illuminate\Cache\Repository
+     */
+    protected static function onCache(): \Illuminate\Cache\Repository
+    {
+        return Cache::driver(self::cacheDriver());
+    }
+
+    /**
      * Get Cache
      *
      * @param string|array $key
@@ -179,9 +212,7 @@ class Auth
      */
     protected static function cache($key)
     {
-        $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
-
-        return Cache::get($key);
+        return self::onCache()->get(self::cacheKey($key));
     }
 
     /**
@@ -193,9 +224,28 @@ class Auth
      */
     protected static function cachePut($key, $data)
     {
-        $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
+        self::onCache()->put(self::cacheKey($key), $data, config('srcservice.cache_expire'));
+    }
 
-        Cache::put($key, $data, config('srcservice.cache_expire'));
+    /**
+     * Build Cache key
+     *
+     * @param mixed $key
+     * @return string
+     */
+    protected static function cacheKey($key): string
+    {
+        return is_array($key) ? self::getKey(...$key) : self::getKey($key);
+    }
+
+    /**
+     * Cache driver
+     *
+     * @return string|null
+     */
+    protected static function cacheDriver(): ?string
+    {
+        return config('srcservice.cache_driver');
     }
 
     /**
