@@ -181,7 +181,7 @@ class Auth
     {
         $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
 
-        return Cache::get($key);
+        return Cache::driver(self::cacheDriver())->get($key);
     }
 
     /**
@@ -195,7 +195,17 @@ class Auth
     {
         $key = is_array($key) ? self::getKey(...$key) : self::getKey($key);
 
-        Cache::put($key, $data, config('srcservice.cache_expire'));
+        Cache::driver(self::cacheDriver())->put($key, $data, config('srcservice.cache_expire'));
+    }
+
+    /**
+     * Cache driver
+     *
+     * @return string|null
+     */
+    protected static function cacheDriver(): ?string
+    {
+        return config('srcservice.cache_driver');
     }
 
     /**
