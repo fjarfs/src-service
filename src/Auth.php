@@ -117,9 +117,10 @@ class Auth
     /**
      * Get auth user info
      *
+     * @param boolean $ignoreCache
      * @return mixed
      */
-    public static function user()
+    public static function user(bool $ignoreCache = false)
     {
         if (self::currentRequestHas(self::REQUEST_AUTH_USER)) {
             $data = self::currentRequestGet(self::REQUEST_AUTH_USER);
@@ -132,7 +133,7 @@ class Auth
         }
 
         $key = ['user', $info->user_id];
-        if ($cache = self::cache($key)) {
+        if (!$ignoreCache && $cache = self::cache($key)) {
             $data = $cache;
         } else {
             try {
